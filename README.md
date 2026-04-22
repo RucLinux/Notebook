@@ -6,6 +6,12 @@
 - 主题作者：`RucLinux`
 - 官方网站：[https://www.myzhenai.com.cn/](https://www.myzhenai.com.cn/)
 
+- 主题的特点：轻便、简洁
+适用于：小说站点、日记类站点、技术类站点、生活类站点
+主题介绍：http://notebook.myzhenai.com.cn/
+主题预览：http://qinwang.haikou-china.com/
+主题特点：回复可以上传图片（限制500k），过滤所有伪造图片上传的文件，限制1小时只能上传3张图片，请后台开启评论需要审核，非审核的所有附件，7天后就会全部自动删除
+
 ## 功能特性
 
 - 封面式首页 + 目录页风格
