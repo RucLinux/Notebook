@@ -93,3 +93,14 @@ console.log('hello notebook');
 ## License
 
 建议使用 GPLv2 或更高版本（与 WordPress 生态保持一致）。
+
+<img width="1747" height="878" alt="70368959-3d5b-464a-ab50-74a39e84380b" src="https://github.com/user-attachments/assets/3605a384-e839-4f67-89a8-08105a1b5ffa" />
+
+<img width="1920" height="911" alt="8_20260422092259_157_24" src="https://github.com/user-attachments/assets/cedbff8a-1d0a-4e60-9103-d1ef3ba91854" />
+<img width="1920" height="911" alt="7_20260422092238_155_24" src="https://github.com/user-attachments/assets/c583b0c9-00ab-4166-8013-089f4daa5433" />
+<img width="1920" height="911" alt="6_20260422092159_152_24" src="https://github.com/user-attachments/assets/e974adcf-741e-4325-9032-11fd3c600ab0" />
+<img width="1920" height="911" alt="5_20260422092141_151_24" src="https://github.com/user-attachments/assets/f4010264-fea8-4721-80dd-ad422e981ed5" />
+<img width="1920" height="911" alt="4_20260422092100_148_24" src="https://github.com/user-attachments/assets/13be309e-7984-497d-b97f-6aff8ee5a55d" />
+<img width="1920" height="911" alt="3_20260422092050_147_24" src="https://github.com/user-attachments/assets/6247fd80-8c52-422b-80fb-0b3454b5e0e3" />
+<img width="1920" height="911" alt="2_20260422092040_146_24" src="https://github.com/user-attachments/assets/591299a8-a825-4a72-9b6b-b9a62ae48f2c" />
+<img width="1920" height="911" alt="1_20260422092025_145_24" src="https://github.com/user-attachments/assets/1b65b394-b1fd-4d76-ad9e-47ae7a41e894" />
