@@ -1,0 +1,2049 @@
+/*
+主题名称：Notebook
+主题作者：RucLinux
+官方网站：https://www.myzhenai.com.cn/  https://www.myzhenai.com/
+
+Theme Name: Notebook
+Theme URI: https://www.myzhenai.com.cn/
+Author: RucLinux
+Author URI: https://www.myzhenai.com/
+Description: 仿笔记本/信纸风格的响应式 WordPress 主题：封面首页、目录页、评论 IP/UA 等。
+Version: 1.0.0
+Requires at least: 5.0
+Tested up to: 6.5
+Text Domain: notebook
+*/
+
+/* Reset & base
+----------------------------------------*/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f3eee3;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    color: #3f72af;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Layout
+----------------------------------------*/
+.site-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-header {
+    background: #faf5ea;
+    border-bottom: 1px solid #e0d8c8;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.header-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.site-title a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2b2b2b;
+}
+
+.site-description {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.main-nav a {
+    font-weight: 500;
+}
+
+.site-main-wrapper {
+    flex: 1 0 auto;
+}
+
+.site-main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+    gap: 2rem;
+}
+
+.content-area {
+    min-width: 0;
+}
+
+.sidebar-area {
+    min-width: 0;
+}
+
+/* 封面页/目录页使用单栏主视觉，不走默认“内容+侧边栏”布局 */
+body.home .site-main,
+body.notebook-is-front .site-main,
+.page-template-page-notebook-directory .site-main,
+.page-template-page-notebook .site-main {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+body.home .content-area,
+body.notebook-is-front .content-area,
+.page-template-page-notebook-directory .content-area,
+.page-template-page-notebook .content-area {
+    width: 100%;
+}
+
+/* Notebook / paper style
+----------------------------------------*/
+.notebook-cover {
+    max-width: 640px;
+    margin: 4rem auto;
+    background: linear-gradient(135deg, #f9f4e9, #f2e7cf);
+    border-radius: 14px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.notebook-cover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.5), transparent 55%),
+                      radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.4), transparent 55%);
+    pointer-events: none;
+}
+
+.notebook-cover-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.notebook-cover-subtitle {
+    color: #666;
+    margin-bottom: 0.65rem;
+}
+
+/* 封面：网站描述下一行（作者等，由 functions.php cover_author_line 配置） */
+.notebook-cover-author {
+    color: #5a5a5a;
+    font-size: 0.98rem;
+    margin-bottom: 1.75rem;
+    position: relative;
+    z-index: 2;
+}
+
+.notebook-cover-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #3f72af, #4361ee);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 10px 18px rgba(63, 114, 175, 0.35);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.notebook-cover-button:hover {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.notebook-page {
+    position: relative;
+    background: #fffdf6;
+    border-radius: 12px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 2.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.notebook-page::before {
+    content: "";
+    position: absolute;
+    left: 62px;
+    top: 0;
+    bottom: 0;
+    border-left: 2px solid rgba(255, 99, 71, 0.5);
+}
+
+.notebook-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to bottom, transparent 95%, rgba(0, 0, 0, 0.03) 96%);
+    background-size: 100% 32px;
+    pointer-events: none;
+}
+
+.notebook-page-inner {
+    position: relative;
+    z-index: 1;
+}
+
+/* ====== Image-like Notebook Variants (cover/directory/content) ====== */
+/* 1) 首页封面 */
+.notebook-cover--home {
+    background-color: #f6efdd;
+    background-image: url('images/cover-1.png');
+    background-repeat: no-repeat;
+    /* 加大背景裁切，尽量遮掉封面图左侧的米白/竖白条 */
+    background-size: 190% auto;
+    background-position: 86% center;
+    max-width: 980px;
+    min-height: 560px;
+    margin: 2.2rem auto;
+    padding: 0;
+    text-align: center;
+}
+
+.notebook-cover--home::before {
+    display: none;
+}
+
+/* 不再用右侧米色遮罩：标签直接贴在背景图右缘 */
+.notebook-cover--home::after {
+    display: none;
+}
+
+.notebook-cover--home .notebook-cover-title,
+.notebook-cover--home .notebook-cover-subtitle,
+.notebook-cover--home .notebook-cover-author {
+    position: relative;
+    z-index: 2;
+}
+
+/* 封面主文案区：水平居中（左右对称留白） */
+.notebook-cover-inner {
+    position: relative;
+    z-index: 4;
+    margin: 0 auto;
+    max-width: 42rem;
+    padding: 6.25rem 2.5rem 5.5rem 2.5rem;
+    text-align: center;
+}
+
+/* 封面中间主题图案（太极图等）：固定大小圆形裁剪框 */
+.notebook-cover-center-art-wrap {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+}
+
+.notebook-cover-center-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+.notebook-tabs-list--cover {
+    position: absolute;
+    right: 122px;
+    top: 8.8rem;
+    z-index: 8;
+    padding-right: 0;
+    margin: 0;
+}
+
+/* 让封面/目录右侧插页更像“贴纸” */
+.notebook-tabs-list--cover .notebook-tab-item a,
+.notebook-tabs-list--directory .notebook-tab-item a {
+    min-width: 108px;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -2px 6px 14px rgba(0, 0, 0, 0.12);
+    font-size: 0.95rem;
+}
+
+/* 封面：Logo 在封面图内左侧约 100px，底透明（不挡背景纸纹） */
+.notebook-cover--home .notebook-cover-logo-wrap {
+    left: calc(50% - 240px);
+    top: 0.35rem;
+}
+
+.notebook-cover-logo-wrap {
+    position: absolute;
+    left: 1.25rem;
+    top: 1.25rem;
+    z-index: 6;
+}
+
+.notebook-cover--home .notebook-cover-logo,
+body.notebook-is-front .notebook-cover--home .notebook-cover-logo {
+    background: transparent;
+    box-shadow: none;
+}
+
+.notebook-cover-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.notebook-cover-logo:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.notebook-cover--home .notebook-cover-logo:hover {
+    background: transparent;
+}
+
+.notebook-cover-logo .notebook-cover-logo-img,
+.notebook-cover-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* 未上传标志时：封面内虚线框底透明 */
+.notebook-cover--home .notebook-cover-logo-slot,
+body.notebook-is-front .notebook-cover--home .notebook-cover-logo-slot {
+    background: transparent !important;
+    border-color: rgba(0, 0, 0, 0.28) !important;
+}
+
+.notebook-cover-logo-slot {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 2px dashed rgba(0, 0, 0, 0.22);
+    background: rgba(255, 255, 255, 0.35);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notebook-cover-favicon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+}
+
+/* 封面：右下角 Next（相对整张封面图底部） */
+.notebook-cover-next {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 9;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1f3a5f;
+    text-decoration: none;
+    padding: 0.45rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.notebook-cover-next:hover {
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.notebook-cover-next-arrow {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* 封面图内底部版权（三行），站名链到本站首页；居中，右侧为标签列留空 */
+.notebook-cover-footer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    bottom: 0.5rem;
+    z-index: 10;
+    text-align: center;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.52);
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.notebook-cover-footer-line--copy a {
+    color: #2b4a73;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.notebook-cover-footer-line--copy a:hover {
+    text-decoration: underline;
+}
+
+.notebook-cover-footer-line + .notebook-cover-footer-line {
+    margin-top: 0.15rem;
+}
+
+.notebook-cover-footer-line {
+    width: 100%;
+    text-align: center;
+}
+
+/* Next：与标签同向左移 150px，并抬高避免压版权行 */
+.notebook-cover--home .notebook-cover-next {
+    bottom: 4.85rem;
+    right: calc(150px + 1rem);
+}
+
+/* 右侧插页颜色（按顺序 1..6） */
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(1) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(1) a { background: #f4b8d1; color: #6a1740; }
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(2) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(2) a { background: #87b9ff; color: #0f2d63; }
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(3) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(3) a { background: #9fe3c2; color: #0f3b23; }
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(4) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(4) a { background: #ffcf6e; color: #5a3a00; }
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(5) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(5) a { background: #c7f18d; color: #214a0b; }
+.notebook-tabs-list--cover .notebook-tab-item:nth-child(6) a,
+.notebook-tabs-list--directory .notebook-tab-item:nth-child(6) a { background: #f7a37d; color: #4a1a08; }
+
+/* 2) 目录页（显示所有文章标题） */
+.notebook-page--directory {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    background-color: transparent;
+    background-image: url('images/dir-1.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center 18px;
+}
+
+/* 兜底：所有 /nb 目录类视图都强制使用 dir-1 背景 */
+.notebook-page--view.notebook-page--directory {
+    background-image: url('images/dir-1.png') !important;
+    background-repeat: no-repeat !important;
+    background-size: 100% auto !important;
+    background-position: center 18px !important;
+}
+
+.notebook-page--directory::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 34px;
+    bottom: 24px;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        to bottom,
+        rgba(120, 96, 72, 0.15),
+        rgba(120, 96, 72, 0.35) 20%,
+        rgba(120, 96, 72, 0.35) 80%,
+        rgba(120, 96, 72, 0.15)
+    );
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.notebook-page--directory::after {
+    /* 第5张目录图是纯空白纸面，遮罩改为轻一点，保留纸张质感 */
+    content: "";
+    position: absolute;
+    top: 96px;
+    left: 68px;
+    right: 210px;
+    bottom: 76px;
+    background: rgba(255, 252, 245, 0.72);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.notebook-page--directory .notebook-page-inner {
+    padding: 112px 118px 82px 88px;
+    z-index: 2;
+}
+
+.notebook-page--directory .entry-header,
+.notebook-page--directory .entry-content {
+    display: none;
+}
+
+.notebook-page--directory .directory-lists {
+    margin: 0;
+}
+
+.notebook-page--directory .directory-lists h2 {
+    display: none; /* 背景图上已包含“目录”视觉，我们只保留动态列表 */
+}
+
+.notebook-page--directory .directory-lists ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.notebook-page--directory .directory-lists li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.notebook-page--directory .directory-lists li::before {
+    content: "-";
+    color: rgba(0, 0, 0, 0.55);
+    width: 14px;
+    flex: 0 0 14px;
+}
+
+.notebook-page--directory .directory-lists a {
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #222;
+    text-decoration: none;
+}
+
+.notebook-page--directory .directory-lists a:hover {
+    text-decoration: underline;
+}
+
+.notebook-page--directory .dir-date {
+    display: none; /* 只显示类似 Pxx 的页码效果 */
+}
+
+.notebook-page--directory .dir-page {
+    margin-left: auto;
+    font-size: 1.25rem;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.notebook-page--directory .notebook-tabs-list--directory {
+    position: absolute;
+    right: 22px;
+    top: 6.2rem;
+    z-index: 3;
+    gap: 0.25rem;
+    max-height: calc(100% - 7rem);
+    overflow-y: auto;
+    overflow-x: visible;
+    padding-right: 2px;
+}
+
+.notebook-page--directory .notebook-tabs-list--directory .notebook-tab-item a {
+    min-width: 102px;
+    padding: 0.34rem 0.62rem;
+    font-size: 0.88rem;
+}
+
+/* 3) 内容页（信纸风格） */
+.notebook-page--content {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: url('images/content-2.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center 18px;
+}
+
+.notebook-page--content::before,
+.notebook-page--content::after {
+    display: none;
+}
+
+.notebook-page--content .notebook-page-inner {
+    padding: 92px 120px 78px 92px;
+}
+
+.notebook-page--content .entry-meta {
+    display: none; /* 内容页图里是空白，我们只保留正文 */
+}
+
+/* Next 视图：用 content-1 作为背景并显示文章目录 */
+.notebook-page--next {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: url('images/content-1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+}
+
+.notebook-page--next::before,
+.notebook-page--next::after {
+    display: none;
+}
+
+.notebook-page--next .notebook-page-inner {
+    padding: 90px 72px 72px;
+}
+
+/* 内容页：正文横线纸效果（代码块除外） */
+.notebook-page--content .entry-content {
+    margin-top: 1rem;
+    padding: 0.2rem 0.35rem 0.35rem;
+    line-height: 1.95;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 33px,
+        rgba(108, 143, 198, 0.28) 33px,
+        rgba(108, 143, 198, 0.28) 34px
+    );
+}
+
+.notebook-page--content .entry-content > * {
+    position: relative;
+    z-index: 1;
+}
+
+.notebook-page--content .entry-content pre,
+.notebook-page--content .entry-content code,
+.notebook-page--content .entry-content .hljs,
+.notebook-page--content .entry-content .highlight,
+.notebook-page--content .entry-content .wp-block-code,
+.notebook-page--content .entry-content .wp-block-preformatted {
+    background-image: none !important;
+}
+
+.notebook-page--content .entry-content pre,
+.notebook-page--content .entry-content .hljs,
+.notebook-page--content .entry-content .highlight,
+.notebook-page--content .entry-content .wp-block-code,
+.notebook-page--content .entry-content .wp-block-preformatted {
+    background-color: rgba(247, 246, 242, 0.96);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+}
+
+@media (max-width: 600px) {
+    .notebook-cover--home {
+        background-image: url('images/cover-2.png');
+        background-size: cover;
+        background-position: center center;
+        padding: 0;
+    }
+
+    .notebook-cover--home::after {
+        display: none;
+    }
+
+    .notebook-cover-inner {
+        padding: 5.25rem 1.25rem 4.5rem 1.25rem !important;
+        max-width: 100%;
+        margin-top: -100px !important;
+        text-align: center !important;
+    }
+
+    .notebook-cover--home .notebook-cover-logo-wrap {
+        left: max(12px, calc(50% - 180px));
+    }
+
+    .notebook-tabs-list--cover {
+        right: 8px;
+        top: 7.5rem;
+    }
+
+    .notebook-cover--home .notebook-cover-next {
+        right: 8px;
+        bottom: 3.85rem;
+        font-size: 0.95rem;
+    }
+
+    .notebook-cover-footer {
+        right: 0;
+        left: 0;
+        font-size: 0.72rem;
+        bottom: 0.4rem;
+    }
+
+    body.home .notebook-cover--home,
+    body.notebook-is-front .notebook-cover--home {
+        width: min(95vw, 520px) !important;
+        min-height: calc(100vh - 50px) !important;
+        height: calc(100vh - 50px) !important;
+        margin: 1rem auto 1.25rem !important;
+        padding-bottom: 4.2rem !important;
+    }
+
+    body.admin-bar.home .notebook-cover--home,
+    body.admin-bar.notebook-is-front .notebook-cover--home {
+        min-height: calc(100vh - 50px - 32px) !important;
+        height: calc(100vh - 50px - 32px) !important;
+    }
+
+    .notebook-cover-center-art-wrap {
+        width: 160px;
+        height: 160px;
+        top: 54%;
+    }
+
+    .notebook-page--directory::after {
+        left: 28px;
+        right: 152px;
+        top: 74px;
+        bottom: 52px;
+    }
+
+    .notebook-page--directory {
+        background-image: url('images/dir-1.png');
+        background-size: 100% auto;
+        background-position: center 14px;
+    }
+
+    .notebook-page--directory .notebook-page-inner {
+        padding: 88px 52px 52px 44px;
+    }
+
+    .notebook-page--directory .notebook-tabs-list--directory {
+        right: 10px;
+        top: 7rem;
+    }
+
+    .notebook-page--content {
+        background-image: url('images/content-1.png');
+        background-size: 100% auto;
+        background-position: center 12px;
+    }
+
+    .notebook-page--content .notebook-page-inner {
+        padding: 78px 38px 52px 34px;
+    }
+
+    .notebook-page--content .entry-content {
+        line-height: 1.85;
+        background-image: repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 30px,
+            rgba(108, 143, 198, 0.26) 30px,
+            rgba(108, 143, 198, 0.26) 31px
+        );
+    }
+
+    .notebook-page--next {
+        background-image: url('images/content-1.png');
+        background-size: cover;
+        background-position: center top;
+    }
+
+    .notebook-page--next .notebook-page-inner {
+        padding: 78px 26px 54px;
+    }
+}
+
+/* ===== NB views final card lock ===== */
+.notebook-page--view {
+    width: min(1020px, 92vw) !important;
+    max-width: 1020px !important;
+    margin: 20px auto 12px !important;
+}
+
+.notebook-page--next {
+    background-image: none !important;
+    background-color: #f3ecdc !important;
+    border: 1px solid rgba(118, 99, 67, 0.24) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.notebook-page--next .notebook-page-inner {
+    min-height: calc(100vh - 96px);
+    display: flex;
+    flex-direction: column;
+    padding: 90px 112px 120px !important;
+    position: relative;
+}
+
+.notebook-page--next .entry-header,
+.notebook-page--next .entry-content,
+.notebook-page--next .nb-view-nav,
+.notebook-page--next .notebook-view-footer {
+    width: min(760px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.notebook-page--next .entry-content {
+    flex: 1 1 auto;
+    transform: translateX(30px);
+}
+
+.notebook-page--next .entry-content .nb-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notebook-page--next .entry-content .nb-list--lined li {
+    padding: 0.55rem 0.15rem;
+    border-bottom: 1px solid rgba(83, 116, 166, 0.22);
+}
+
+.notebook-page--next .notebook-view-footer {
+    margin-top: auto;
+    padding-top: 0.65rem;
+    text-align: center;
+    transform: none;
+}
+
+.notebook-page--next .entry-header {
+    margin-top: -70px;
+}
+
+.notebook-page--view .nb-view-nav--next {
+    position: absolute;
+    right: 6px;
+    bottom: 20px;
+    width: auto;
+    margin: 0;
+    z-index: 6;
+}
+
+.notebook-page--view .nb-view-nav--next a {
+    display: inline-block;
+    min-width: 96px;
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px 0 0 6px;
+    background: #f9f0d9;
+    box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.12);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.notebook-page--next .notebook-tabs-list--directory .notebook-tab-item a {
+    transform: translateX(-50px);
+}
+
+.notebook-page--next .notebook-tabs-list--directory .notebook-tab-item a[href*="nb_view=next"],
+.notebook-page--next .notebook-tabs-list--directory .notebook-tab-item a[href*="/nb/next"] {
+    transform: none;
+}
+
+.notebook-page--next .notebook-tabs-list--directory {
+    z-index: 9 !important;
+    pointer-events: auto !important;
+}
+
+.notebook-page--next .notebook-tabs-list--directory .notebook-tab-item a {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+    .notebook-page--view {
+        width: min(95vw, 520px) !important;
+        max-width: 520px !important;
+        margin: 10px auto !important;
+    }
+
+    .notebook-page--next .notebook-page-inner {
+        min-height: calc(100vh - 80px);
+        padding: 76px 30px 50px !important;
+    }
+
+    .notebook-page--next .entry-content {
+        transform: translateX(14px);
+    }
+
+    .notebook-page--next .notebook-view-footer {
+        transform: none;
+    }
+
+    .notebook-page--view .nb-view-nav--next {
+        right: 4px;
+        bottom: 16px;
+    }
+}
+
+/* Tabs / inserts on the right
+----------------------------------------*/
+.notebook-tabs {
+    position: relative;
+}
+
+.notebook-tabs-list {
+    position: absolute;
+    right: -3.5rem;
+    top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.notebook-tab-item a {
+    display: block;
+    min-width: 120px;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px 0 0 6px;
+    background: #f9f0d9;
+    box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.12);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.notebook-tab-item a:hover {
+    background: #ffe9b3;
+    text-decoration: none;
+}
+
+/* Posts & entries
+----------------------------------------*/
+.entry-header {
+    margin-bottom: 0.75rem;
+}
+
+.entry-title {
+    font-size: 1.5rem;
+    margin: 0 0 0.35rem;
+}
+
+.entry-meta {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.entry-content {
+    margin-top: 1.2rem;
+}
+
+.post-media-list {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: #f7f7f7;
+    font-size: 0.88rem;
+}
+
+.post-media-list strong {
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.post-media-list ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+/* Sidebar blocks
+----------------------------------------*/
+.widget {
+    margin-bottom: 1.75rem;
+    padding: 1.1rem 1.25rem;
+    background: #fffdf6;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.widget-title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    border-bottom: 1px dashed #e1d7c6;
+    padding-bottom: 0.4rem;
+}
+
+.visitor-info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.88rem;
+}
+
+.visitor-info-list li + li {
+    margin-top: 0.35rem;
+}
+
+/* Footer
+----------------------------------------*/
+.site-footer {
+    background: #f4efe3;
+    border-top: 1px solid #e0d8c8;
+    margin-top: auto;
+}
+
+/* 首页版权已做进封面图内，页脚不再占一块条带 */
+.site-footer--cover-home {
+    background: transparent;
+    border-top: none;
+    margin-top: 0;
+    padding: 0;
+}
+
+.footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.footer-links a + a {
+    margin-left: 0.75rem;
+}
+
+.footer-icp a {
+    color: inherit;
+}
+
+.footer-credit {
+    width: 100%;
+    text-align: center;
+}
+
+.footer-line {
+    margin: 0.25rem 0;
+}
+
+.footer-icp {
+    margin: 0;
+}
+
+/* Comments
+----------------------------------------*/
+.comments-area {
+    margin-top: 2.5rem;
+}
+
+.comment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.comment-body {
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.75rem;
+    background: #fffdf6;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+}
+
+.comment-author-avatar img {
+    border-radius: 50%;
+}
+
+.comment-meta-extra {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.comment-content {
+    margin-top: 0.35rem;
+}
+
+.comment-image {
+    margin-top: 0.5rem;
+}
+
+.comment-image img {
+    max-width: 220px;
+    border-radius: 6px;
+}
+
+/* Forms */
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+textarea {
+    width: 100%;
+    padding: 0.5rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid #d2c8b7;
+    background: #fffdf6;
+}
+
+button,
+input[type="submit"] {
+    display: inline-block;
+    border-radius: 999px;
+    border: none;
+    padding: 0.5rem 1.1rem;
+    background: #3f72af;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Responsive
+----------------------------------------*/
+@media (max-width: 900px) {
+    .site-main {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .notebook-tabs-list {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        gap: 0.5rem;
+    }
+
+    .notebook-tab-item a {
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .notebook-cover {
+        margin: 3rem 1rem;
+        padding: 2.1rem 1.6rem;
+    }
+
+    .notebook-page {
+        padding: 1.2rem 1.4rem;
+    }
+}
+
+/* ===== Fix: prevent legacy styles from breaking notebook-page layout ===== */
+/* 旧生成的样式里使用了 .notebook-tabs（作为“插页容器”），会误伤我们模板里的 .notebook-page.notebook-tabs。 */
+.notebook-page.notebook-tabs {
+    width: auto !important;
+    display: block !important;
+    position: relative !important;
+}
+
+.notebook-tabs {
+    width: auto !important;
+    display: block !important;
+    position: relative !important;
+    flex: initial !important;
+    flex-direction: initial !important;
+    gap: 0 !important;
+}
+
+.notebook-tabs-list {
+    position: absolute !important;
+}
+
+.notebook-tabs-list--cover,
+.notebook-tabs-list--directory {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+}
+
+/* ===== Notebook 信纸页视图（/nb/{view}/）样式 ===== */
+.notebook-page--view {
+    width: min(1200px, 96vw);
+    max-width: 1200px;
+    min-height: calc(100vh - 60px);
+    margin: 18px auto 12px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.notebook-page--view .nb-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notebook-page--view .nb-list li {
+    margin: 0.35rem 0;
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-lists h2.nb-directory-title {
+    display: block;
+    margin: 0 0 0.9rem;
+    font-size: 1.45rem;
+    text-align: center;
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-lists .nb-directory-body {
+    margin-top: 0.2rem;
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-nav {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-nav a {
+    color: #5374a6;
+    text-decoration: none;
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-nav a:hover {
+    text-decoration: underline;
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-sep {
+    margin: 0 0.2rem;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+.notebook-page--view.notebook-page--directory .nb-directory-current {
+    color: rgba(0, 0, 0, 0.78);
+    font-weight: 600;
+}
+
+.notebook-page--view .nb-list--lined li {
+    margin: 0;
+    padding: 0.55rem 0.15rem;
+    border-bottom: 1px solid rgba(83, 116, 166, 0.22);
+}
+
+.notebook-page--view .nb-list--lined li:last-child {
+    border-bottom: none;
+}
+
+.notebook-page--view .nb-date {
+    display: inline-block;
+    min-width: 52px;
+    color: rgba(0, 0, 0, 0.58);
+    font-variant-numeric: tabular-nums;
+}
+
+.notebook-page--view .nb-links-list li {
+    padding-left: 0;
+}
+
+.notebook-page--view .nb-link-logo {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
+.notebook-page--view .nb-link-desc {
+    margin-top: 0.2rem;
+    color: #666;
+    font-size: 0.92rem;
+}
+
+.notebook-page--view .nb-link-url {
+    color: #888;
+    font-size: 0.84rem;
+    margin-top: 0.1rem;
+    word-break: break-all;
+}
+
+.notebook-page--view .nb-search-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.6rem;
+    margin: 0.2rem 0 1rem;
+}
+
+.notebook-page--view .nb-search-form input[type="text"] {
+    margin: 0;
+}
+
+.notebook-page--view .nb-search-form button {
+    white-space: nowrap;
+}
+
+.notebook-page--view .nb-html > * {
+    margin-top: 0.95rem;
+    margin-bottom: 0.95rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid rgba(83, 116, 166, 0.22);
+}
+
+.notebook-page--view .nb-html > *:last-child {
+    border-bottom: none;
+}
+
+.notebook-page--view .nb-tree {
+    display: block;
+}
+
+.notebook-page--view details.nb-tree-item {
+    margin: 0.55rem 0;
+}
+
+.notebook-page--view summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.notebook-page--view .nb-view-nav a {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.notebook-view-footer {
+    margin-top: 1rem;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.62);
+    font-size: 0.86rem;
+}
+
+.notebook-view-footer-line + .notebook-view-footer-line {
+    margin-top: 0.15rem;
+}
+
+.notebook-view-footer a {
+    color: #2b4a73;
+}
+
+/* ===== Home page full-cover overrides ===== */
+/* 单篇/封面：隐藏主题头部重复站点标题区域（按需调整） */
+body.home .site-header,
+body.notebook-is-front .site-header {
+    display: none !important;
+}
+
+/* 首页两侧不再露出 body 米色边：与封面纸色一致 */
+body.home,
+body.notebook-is-front {
+    background: #f6efdd;
+}
+
+body.home .site-wrapper,
+body.notebook-is-front .site-wrapper {
+    max-width: none !important;
+    width: 100% !important;
+    overflow-x: hidden;
+}
+
+/* 封面页整站主视觉（.notebook-is-front 由 functions.php 在 is_front_page 时注入） */
+body.home .site-main-wrapper,
+body.home .site-main,
+body.notebook-is-front .site-main-wrapper,
+body.notebook-is-front .site-main {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+body.home .content-area,
+body.notebook-is-front .content-area {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+body.home .notebook-cover--home,
+body.notebook-is-front .notebook-cover--home {
+    width: min(1200px, 96vw) !important;
+    max-width: 1200px !important;
+    min-height: calc(100vh - 20px) !important;
+    height: calc(100vh - 20px) !important;
+    margin: 30px auto -10px !important;
+    border-radius: 16px !important;
+    padding: 0 !important;
+    padding-bottom: 4.6rem !important;
+    text-align: center !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12) !important;
+}
+
+body.admin-bar.home .notebook-cover--home,
+body.admin-bar.notebook-is-front .notebook-cover--home {
+    min-height: calc(100vh - 32px - 20px) !important;
+    height: calc(100vh - 32px - 20px) !important;
+}
+
+body.home .notebook-cover--home .notebook-cover-title,
+body.notebook-is-front .notebook-cover--home .notebook-cover-title {
+    font-size: 2.8rem;
+    margin-top: 0;
+}
+
+body.home .notebook-cover--home .notebook-cover-subtitle,
+body.notebook-is-front .notebook-cover--home .notebook-cover-subtitle {
+    font-size: 1.1rem;
+}
+
+body.home .notebook-cover-inner,
+body.notebook-is-front .notebook-cover-inner {
+    padding: 6.5rem 2rem 5.5rem 2rem !important;
+    margin-top: -100px !important;
+    max-width: 100% !important;
+    text-align: center !important;
+}
+
+/* 标签与 Next：相对封面右缘向左 150px */
+body.home .notebook-tabs-list--cover,
+body.notebook-is-front .notebook-tabs-list--cover {
+    right: 152px !important;
+    top: 9.2rem !important;
+    position: absolute !important;
+}
+
+body.home .notebook-cover--home .notebook-cover-next,
+body.notebook-is-front .notebook-cover--home .notebook-cover-next {
+    right: 237px !important;
+}
+
+body.home .notebook-cover--home::after,
+body.notebook-is-front .notebook-cover--home::after {
+    display: none !important;
+}
+
+body.admin-bar .notebook-cover--home .notebook-cover-logo-wrap,
+body.admin-bar.notebook-is-front .notebook-cover--home .notebook-cover-logo-wrap {
+    top: calc(0.35rem + 32px);
+    left: calc(50% - 240px);
+}
+
+/* 页脚：第一行站名链接 */
+.footer-line--primary a {
+    font-weight: 600;
+    color: #2b4a73;
+}
+
+.footer-line--primary a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Mobile cover hard-fix (prevent override conflicts) ===== */
+@media (max-width: 600px) {
+    body.home .notebook-cover--home,
+    body.notebook-is-front .notebook-cover--home {
+        width: min(95vw, 520px) !important;
+        max-width: 520px !important;
+        min-height: calc(100vh - 70px) !important;
+        height: calc(100vh - 70px) !important;
+        margin: 10px auto !important;
+        border-radius: 14px !important;
+        background-size: cover !important;
+        background-position: center center !important;
+    }
+
+    body.admin-bar.home .notebook-cover--home,
+    body.admin-bar.notebook-is-front .notebook-cover--home {
+        min-height: calc(100vh - 70px - 32px) !important;
+        height: calc(100vh - 70px - 32px) !important;
+    }
+
+    body.home .notebook-cover-inner,
+    body.notebook-is-front .notebook-cover-inner {
+        margin-top: -40px !important;
+        padding: 4.1rem 1rem 4.2rem !important;
+    }
+
+    body.home .notebook-tabs-list--cover,
+    body.notebook-is-front .notebook-tabs-list--cover {
+        right: 8px !important;
+        top: 6.8rem !important;
+        gap: 0.3rem !important;
+    }
+
+    body.home .notebook-cover--home .notebook-cover-next,
+    body.notebook-is-front .notebook-cover--home .notebook-cover-next {
+        right: 8px !important;
+        bottom: 3.35rem !important;
+    }
+}
+
+/* ===== Mobile adaptive fine-tune ===== */
+@media (max-width: 600px) {
+    .notebook-page--view {
+        width: min(95vw, 520px);
+        max-width: 520px;
+        min-height: calc(100vh - 80px);
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+
+    /* 1) 标题与描述整体下移 */
+    body.home .notebook-cover-inner,
+    body.notebook-is-front .notebook-cover-inner {
+        margin-top: 40px !important;
+        padding-top: 4.8rem !important;
+        text-align: center !important;
+    }
+
+    /* 2) Next：上移10、左移5（以右定位为基准） */
+    body.home .notebook-cover--home .notebook-cover-next,
+    body.notebook-is-front .notebook-cover--home .notebook-cover-next {
+        right: 31px !important;
+        bottom: calc(3.35rem + 30px) !important;
+    }
+
+    /* 3) 右侧标签缩短约一半，并右移10 */
+    body.home .notebook-tabs-list--cover,
+    body.notebook-is-front .notebook-tabs-list--cover {
+        right: -2px !important;
+    }
+
+    body.home .notebook-tabs-list--cover .notebook-tab-item a,
+    body.notebook-is-front .notebook-tabs-list--cover .notebook-tab-item a {
+        min-width: 56px !important;
+        padding: 0.36rem 0.42rem !important;
+        font-size: 0.82rem !important;
+    }
+
+    /* 4) 三行版权信息居中 */
+    body.home .notebook-cover-footer,
+    body.notebook-is-front .notebook-cover-footer {
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        transform: none !important;
+        text-align: center !important;
+        align-items: center !important;
+        bottom: calc(0.4rem + 3px) !important;
+    }
+}
+
+/* ===== Unified beige panel for all nb_view pages ===== */
+.notebook-page--view,
+.notebook-page--view.notebook-page--directory,
+.notebook-page--view.notebook-page--content,
+.notebook-page--view.notebook-page--next {
+    background-image: none !important;
+    background-color: #f3ecdc !important;
+    border: 1px solid rgba(118, 99, 67, 0.24) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.notebook-page--view::before,
+.notebook-page--view::after,
+.notebook-page--view.notebook-page--directory::before,
+.notebook-page--view.notebook-page--directory::after,
+.notebook-page--view.notebook-page--content::before,
+.notebook-page--view.notebook-page--content::after,
+.notebook-page--view.notebook-page--next::before,
+.notebook-page--view.notebook-page--next::after {
+    display: none !important;
+}
+
+.notebook-page--view .notebook-page-inner {
+    padding: 72px 96px 110px !important;
+    min-height: calc(100vh - 96px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.notebook-page--view .entry-header,
+.notebook-page--view .entry-content,
+.notebook-page--view .directory-lists,
+.notebook-page--view .nb-view-nav,
+.notebook-page--view .notebook-view-footer {
+    width: min(760px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== Single post page (content page) ===== */
+body.single .site-main {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* 单篇页：弱化顶部外框，突出内容卡片 */
+body.single .site-header {
+    display: none !important;
+}
+
+body.single .site-main-wrapper,
+body.single .site-main,
+body.single .content-area {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+body.single .notebook-page--single {
+    width: min(1020px, 92vw);
+    max-width: 1020px;
+    margin: 20px auto 12px;
+    background: #f3ecdc;
+    border: 1px solid rgba(118, 99, 67, 0.24);
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+body.single .notebook-page--single::before,
+body.single .notebook-page--single::after {
+    display: none;
+}
+
+body.single .notebook-page--single .notebook-page-inner {
+    min-height: calc(100vh - 96px);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 72px 72px;
+}
+
+body.single .notebook-page--single .entry-header {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+body.single .notebook-page--single .entry-title {
+    margin: 0 0 0.65rem;
+    font-size: 2.2rem;
+    line-height: 1.25;
+}
+
+body.single .notebook-page--single .entry-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1rem;
+    color: rgba(0, 0, 0, 0.62);
+    font-size: 0.92rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.12);
+}
+
+body.single .notebook-page--single .entry-content {
+    margin-top: 1rem;
+    padding: 0.2rem 0.35rem 0.35rem;
+    color: #2f2f2f;
+    font-size: 1.03rem;
+    line-height: 2;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 33px,
+        rgba(108, 143, 198, 0.28) 33px,
+        rgba(108, 143, 198, 0.28) 34px
+    );
+}
+
+body.single .notebook-page--single .entry-content p {
+    margin: 0 0 1rem;
+}
+
+body.single .notebook-page--single .entry-content img,
+body.single .notebook-page--single .entry-content video,
+body.single .notebook-page--single .entry-content iframe {
+    display: block;
+    margin: 1.05rem auto;
+    border-radius: 6px;
+    max-width: min(100%, 780px);
+}
+
+/* 自动媒体标签统一尺寸（图片/视频/音频） */
+.entry-content .notebook-media {
+    display: block;
+    margin: 1rem auto;
+    max-width: 100%;
+}
+
+.entry-content .notebook-media--image,
+.entry-content .notebook-media--video {
+    width: min(100%, 760px);
+    height: 420px;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+}
+
+.entry-content .notebook-media--image {
+    height: auto;
+    object-fit: unset;
+}
+
+.entry-content .notebook-media--audio {
+    width: min(100%, 760px);
+    height: 54px;
+}
+
+.entry-content .notebook-code-block {
+    width: min(100%, 760px);
+    margin: 1rem auto;
+    overflow: auto;
+}
+
+body.single .notebook-page--single .entry-content pre,
+body.single .notebook-page--single .entry-content code,
+body.single .notebook-page--single .entry-content .hljs,
+body.single .notebook-page--single .entry-content .highlight,
+body.single .notebook-page--single .entry-content .wp-block-code,
+body.single .notebook-page--single .entry-content .wp-block-preformatted {
+    background-image: none !important;
+}
+
+body.single .notebook-page--single .notebook-single-nav {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+body.single .notebook-page--single .notebook-single-nav-item a,
+body.single .notebook-page--single .notebook-single-nav-item span {
+    display: block;
+    text-align: center;
+    padding: 0.46rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+body.single .notebook-page--single .comments-area {
+    margin-top: 1.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(100, 100, 100, 0.14);
+}
+
+body.single .notebook-page--single .comments-title {
+    margin: 0 0 1rem;
+    font-size: 1.22rem;
+}
+
+body.single .notebook-page--single .comment-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+body.single .notebook-page--single .comment-body {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(100, 100, 100, 0.12);
+    border-radius: 8px;
+    padding: 0.8rem 0.9rem;
+}
+
+body.single .notebook-page--single .comment-form textarea,
+body.single .notebook-page--single .comment-form input[type="text"],
+body.single .notebook-page--single .comment-form input[type="email"],
+body.single .notebook-page--single .comment-form input[type="url"] {
+    width: 100%;
+}
+
+body.single .notebook-page--single #reply-title,
+body.single .notebook-page--single .comment-reply-title {
+    font-size: 1.12rem;
+    margin: 0.8rem 0 0.65rem;
+}
+
+body.single .notebook-page--single .comment-form textarea {
+    min-height: 120px;
+}
+
+@media (max-width: 600px) {
+    body.single .notebook-page--single {
+        width: min(95vw, 520px);
+        margin: 10px auto;
+        border-radius: 12px;
+    }
+
+    body.single .notebook-page--single .notebook-page-inner {
+        min-height: calc(100vh - 80px);
+        padding: 62px 18px 58px;
+    }
+
+    body.single .notebook-page--single .entry-title {
+        font-size: 1.75rem;
+    }
+
+    body.single .notebook-page--single .notebook-single-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 锁定三行版权到底部，避免随内容高度漂移 */
+.notebook-page--view .notebook-view-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.notebook-page--view .nb-view-nav--next {
+    width: auto !important;
+    margin: 0 !important;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notebook-page--view .entry-content,
+.notebook-page--view .nb-directory-body {
+    flex: 1 1 auto;
+}
+
+.notebook-page--view .notebook-tabs-list--directory {
+    right: 0 !important;
+    top: 6.4rem !important;
+    z-index: 9 !important;
+    pointer-events: auto !important;
+}
+
+.notebook-page--view .notebook-tabs-list--directory .notebook-tab-item a {
+    transform: none !important;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* 搜索框缩短 */
+.notebook-page--view .nb-search-form {
+    justify-content: center;
+    align-items: center;
+    gap: 0.22rem;
+}
+
+.notebook-page--view .nb-search-form input[type="text"] {
+    flex: 0 0 auto;
+    width: min(320px, 62vw);
+    max-width: 320px;
+}
+
+@media (max-width: 600px) {
+    .notebook-page--view .notebook-page-inner {
+        padding: 64px 24px 80px !important;
+        min-height: calc(100vh - 80px);
+    }
+
+    .notebook-page--view .notebook-tabs-list--directory {
+        right: 0 !important;
+        top: 6.8rem !important;
+    }
+
+    .notebook-page--view .nb-search-form input[type="text"] {
+        width: min(220px, 62vw);
+        max-width: 220px;
+    }
+
+    .notebook-page--view .notebook-view-footer {
+        bottom: -6px;
+    }
+}
+
+/* ===== 全站普通页：与文章目录(nb_view)相同的米白卡片背景（不含封面首页） ===== */
+body:not(.notebook-is-front):not(.home),
+body.home.paged {
+    background-color: #f3eee3 !important;
+}
+
+/* 固定页面、文章列表 index、归档等：使用 notebook-page--content 且非 nb_view */
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--content:not(.notebook-page--view),
+body.home.paged .content-area .notebook-page.notebook-page--content:not(.notebook-page--view),
+/* 笔记本目录页模板 */
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--directory,
+body.home.paged .content-area .notebook-page.notebook-page--directory {
+    background-image: none !important;
+    background-color: #f3ecdc !important;
+    border: 1px solid rgba(118, 99, 67, 0.24) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+    overflow: hidden;
+}
+
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--content:not(.notebook-page--view)::before,
+body.home.paged .content-area .notebook-page.notebook-page--content:not(.notebook-page--view)::before,
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--content:not(.notebook-page--view)::after,
+body.home.paged .content-area .notebook-page.notebook-page--content:not(.notebook-page--view)::after,
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--directory::before,
+body.home.paged .content-area .notebook-page.notebook-page--directory::before,
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--directory::after,
+body.home.paged .content-area .notebook-page.notebook-page--directory::after {
+    display: none !important;
+}
+
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--content:not(.notebook-page--view) .notebook-page-inner,
+body.home.paged .content-area .notebook-page.notebook-page--content:not(.notebook-page--view) .notebook-page-inner,
+body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--directory .notebook-page-inner,
+body.home.paged .content-area .notebook-page.notebook-page--directory .notebook-page-inner {
+    padding: 48px 40px 56px !important;
+}
+
+/* 侧栏小工具：与主卡片协调的浅米白块 */
+body:not(.notebook-is-front):not(.home) .sidebar-area .widget,
+body.home.paged .sidebar-area .widget {
+    background: #faf6ec;
+    border: 1px solid rgba(118, 99, 67, 0.18);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 600px) {
+    body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--content:not(.notebook-page--view) .notebook-page-inner,
+    body.home.paged .content-area .notebook-page.notebook-page--content:not(.notebook-page--view) .notebook-page-inner,
+    body:not(.notebook-is-front):not(.home) .content-area .notebook-page.notebook-page--directory .notebook-page-inner,
+    body.home.paged .content-area .notebook-page.notebook-page--directory .notebook-page-inner {
+        padding: 36px 18px 44px !important;
+    }
+}
+
+/* ===== Mobile hard-adaptive fix (WeChat/Huawei browsers) ===== */
+@media (max-width: 768px) {
+    .notebook-page--view {
+        width: min(96vw, 560px) !important;
+        max-width: 560px !important;
+        margin: 10px auto 14px !important;
+        border-radius: 12px !important;
+    }
+
+    .notebook-page--view .notebook-page-inner {
+        /* 给右侧标签预留固定空间，防止正文被遮挡 */
+        padding: 56px 104px 84px 16px !important;
+        min-height: auto !important;
+    }
+
+    .notebook-page--view .entry-header,
+    .notebook-page--view .entry-content,
+    .notebook-page--view .directory-lists,
+    .notebook-page--view .nb-view-nav,
+    .notebook-page--view .notebook-view-footer {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .notebook-page--view .notebook-tabs-list--directory {
+        right: 4px !important;
+        top: 74px !important;
+        gap: 0.28rem !important;
+        max-height: calc(100% - 110px);
+        overflow-y: auto;
+        overflow-x: visible;
+    }
+
+    .notebook-page--view .notebook-tabs-list--directory .notebook-tab-item a {
+        min-width: 72px !important;
+        padding: 0.34rem 0.3rem !important;
+        font-size: 0.82rem !important;
+        line-height: 1.05 !important;
+        border-radius: 8px 0 0 8px !important;
+    }
+
+    .notebook-page--view .nb-search-form {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start !important;
+        align-items: center;
+        gap: 0.2rem !important;
+    }
+
+    .notebook-page--view .nb-search-form input[type="text"] {
+        width: calc(100% - 64px) !important;
+        max-width: none !important;
+        min-width: 0;
+    }
+
+    .notebook-page--view .nb-search-form button {
+        padding: 0.38rem 0.55rem !important;
+        font-size: 0.82rem !important;
+        white-space: nowrap;
+    }
+
+    .notebook-page--view .notebook-view-footer {
+        bottom: 2px !important;
+        font-size: 0.74rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .notebook-page--view .notebook-page-inner {
+        padding-right: 96px !important;
+        padding-left: 14px !important;
+    }
+
+    .notebook-page--view .notebook-tabs-list--directory .notebook-tab-item a {
+        min-width: 66px !important;
+        font-size: 0.78rem !important;
+    }
+}
